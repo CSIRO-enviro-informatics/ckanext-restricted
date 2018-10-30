@@ -3,16 +3,20 @@
 {% block subtitle %}{{ _('Request Access') }}{% endblock %}
 
 {% block breadcrumb_content %}
-  {% set dataset = pkg.title or pkg.name %}
-  {% if pkg.organization %}
-    {% set organization = pkg.organization.title or pkg.organization.name %}
-    <li>{% link_for _('Organizations'), controller='organization', action='index' %}</li>
-    <li>{% link_for organization|truncate(30), controller='organization', action='read', id=pkg.organization.name %}</li>
+  {% if pkg %}
+    {% set dataset = pkg.title or pkg.name %}
+    {% if pkg.organization %}
+      {% set organization = pkg.organization.title or pkg.organization.name %}
+      <li>{% link_for _('Organizations'), controller='organization', action='index' %}</li>
+      <li>{% link_for organization|truncate(30), controller='organization', action='read', id=pkg.organization.name %}</li>
+    {% else %}
+      <li>{% link_for _('Datasets'), controller='package', action='search' %}</li>
+    {% endif %}
   {% else %}
-    <li>{% link_for _('Datasets'), controller='package', action='search' %}</li>
+    <li>{% link_for  _('Datasets'), contoller='package', action='read'  %}</li>
+    <li><a href="">{{  _('Resource')  }}</a></li>
+    <li class="active"><a href="">{{  _('Request Access')  }}</a></li>
   {% endif %}
-  <li>{% link_for dataset|truncate(30), controller='package', action='read', id=pkg.name %}</li>
-  <li class="active" {{ self.breadcrumb_content_selected() }}><a href="">{{ _('Request Access') }}</a></li>
 {% endblock %}
 
 {% block primary_content_inner %}{% endblock %}
